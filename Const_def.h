@@ -12,6 +12,9 @@
 
 #define head_size 2.0
 #define body_size 2.0
+#define tail_size 0.5
 #define num_of_pic 5
 
 #define max_body_num 100 
+
+#define obs_num 100

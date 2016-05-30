@@ -31,7 +31,7 @@ wallSpecular[4] = { 0.3, 0.3, 0.3, 1.0 },
 wallShininess = 50.0,     
 CameraUp[3] = { 1.0, 0.0, 0.0 }; 
 
-Obstacle obs[100];
+Obstacle obs[obs_num];
 Snake TA;
 
 void init();
@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
 	glutIdleFunc(Update);
 	//glutPassiveMotionFunc(processMousePassiveMotion);
 	init();
+	Draw_snake_init();
 	glutMainLoop();
 	return 0;
 }
@@ -165,10 +166,12 @@ void display()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, headColor);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, headColor);
 
+	glEnable(GL_TEXTURE_2D);
 	TA.display();
-	for (int i = 0; i < 100; i++)
-		obs[i].display();
+	glDisable(GL_TEXTURE_2D);
 
+	for (int i = 0; i < obs_num; i++)
+		obs[i].display();
 
 	//printf("%d\n", TA.collision_result);
 
@@ -184,7 +187,6 @@ void display()
 		//then it should throw a exception
 		break;
 	}
-
 
 	glutSwapBuffers();
 }

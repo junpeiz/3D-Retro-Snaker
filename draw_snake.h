@@ -63,12 +63,14 @@ public:
 	}
 };
 
+void Draw_snake_init();
+
 void Draw_cube(GLfloat size);
 void Draw_head_cube(GLfloat size);
 void Draw_mouse_cube(GLfloat size);
 void Draw_snake_head(GLfloat size);
 void Draw_snake_body(GLfloat size);
-void Draw_snake_init();
+
 AUX_RGBImageRec *LoadBMP(char * Filename);
 int LoadGLTextures(GLuint& unTexture, const char* chFileName);
 
