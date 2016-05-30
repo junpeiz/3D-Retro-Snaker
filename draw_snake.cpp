@@ -11,7 +11,8 @@ void Snake::displayHead()
 	glRotated(180, 1, 0, 0);
 	glRotated(-90, 0, 0, 1);
 
-	glutSolidTeapot(2.0);
+	//glutSolidTeapot(2.0);
+	Draw_snake_head(head_size);
 
 	glPopMatrix();
 }
@@ -23,7 +24,8 @@ void Snake::displayBody()
 		if (i >= max_body_num)i = 0;
 		glPushMatrix();
 		glTranslatef(body_position[i][0], body_position[i][1], body_position[i][2]);
-		glutSolidTeapot(2);
+		//glutSolidTeapot(2);
+		Draw_snake_body(body_size);
 		glPopMatrix();
 	}
 }
@@ -32,7 +34,8 @@ void Snake::displayTail()
 {
 	glPushMatrix();
 	glTranslatef(body_position[num_body - 1][0], body_position[num_body - 1][1], body_position[num_body - 1][2]);
-	glutSolidTeapot(2);
+	//glutSolidTeapot(2);
+	Draw_snake_body(tail_size);
 	glPopMatrix();
 }
 
@@ -252,7 +255,7 @@ void Draw_snake_body(GLfloat size)
 	glBindTexture(GL_TEXTURE_2D, Texture[0]);
 	glPushMatrix();
 	//glutSolidCube(size);
-	Draw_cube(size);     //the length of the cube is size
+	Draw_cube(size/2.0);     //the length of the cube is size
 	glPopMatrix();
 	glFlush();
 }
@@ -273,7 +276,7 @@ void Draw_snake_head(GLfloat size)
 
 void Draw_snake_init()
 {
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);//使纹理不变形
 	LoadGLTextures(Texture[0], "snake_head.bmp");
 	LoadGLTextures(Texture[1], "snake_eye.bmp");
