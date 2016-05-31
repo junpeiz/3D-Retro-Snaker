@@ -6,8 +6,8 @@
 
 using namespace std;
 
+bool Transparent=0;
 bool
-Transparent = 0,
 AutoRun = 1,
 ChangingPlane = 0,
 EnableKeyboard = 1;
@@ -175,18 +175,7 @@ void display()
 
 	//printf("%d\n", TA.collision_result);
 
-	switch (TA.collision_result)
-	{
-	case 0:
-		//well no collison then do nothing 
-		break;
-	case 1:
-		collison_handler_1();
-		break;
-	default:
-		//then it should throw a exception
-		break;
-	}
+	collison_handler(TA.collision_result);
 
 	glutSwapBuffers();
 }
