@@ -173,7 +173,7 @@ void display()
 	for (int i = 0; i < obs_num; i++)
 		obs[i].display();
 
-	//printf("%d\n", TA.collision_result);
+	printf("%d\n", TA.collision_result);
 
 	collison_handler(TA.collision_result);
 

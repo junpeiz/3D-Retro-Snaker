@@ -5,6 +5,7 @@ using namespace std;
 int collision_state_1,collision_state_2,collision_state_3,collision_state_4,collision_state_5,collision_state_6;
 static int collision_counter_1,collision_counter_2,collision_counter_3,collision_counter_4,collision_counter_5,collision_counter_6;
 extern Snake TA;
+extern bool Transparent;
 int kind;
 Obstacle::Obstacle()
 {
@@ -43,7 +44,8 @@ Obstacle::Obstacle()
 		position[0] = rand() % LengthOfCube - LengthOfCube / 2;
 		break;
 	}
-	kind = rand()%4;
+	kind = rand()%6;
+	printf("kind is %d\n", kind);
 }
 
 void Obstacle::display()
@@ -72,7 +74,7 @@ void Obstacle::display()
 			display_glasses();
 			break;
 		default:
-			
+			break;
 	}
 
 	glPopMatrix();
@@ -138,7 +140,7 @@ void collison_handler_2(int setup)
 		}
 		else
 		{
-			TA.Level-=10
+			TA.Level -= 10;
 			collision_counter_2=0;
 			collision_state_2=0;	
 		}
@@ -158,7 +160,7 @@ void collison_handler_3(int setup)
 		if(collision_counter_3++<10)
 		{
 			if(TA.num_body>=1)TA.num_body--;
-			display_plus_1_second(i);
+			display_plus_1_second();
 		}
 		else
 		{
@@ -179,16 +181,16 @@ void collison_handler_4(int setup)
 	{
 		if(collision_state_1||collision_state_2||collision_state_3||collision_state_5||collision_state_6)
 		{
-			collision_counter_4==100
+			collision_counter_4 = 100;
 		}
 		if(collision_counter_4>0)
 		{
 			collision_counter_4--;
-			for(int i = 0;i<num_body;i++)
+			for(int i = 0;i<TA.num_body;i++)
 			{
-	  			body_position[i][0]+=sin(collision_counter_4/100*2*M_PI);
-				body_position[i][1]+=sin(collision_counter_4/100*2*M_PI);
-				body_position[i][2]+=sin(collision_counter_4/100*2*M_PI);
+	  			TA.body_position[i][0]+=sin(collision_counter_4/100*2*PI);
+				TA.body_position[i][1]+=sin(collision_counter_4/100*2*PI);
+				TA.body_position[i][2]+=sin(collision_counter_4/100*2*PI);
 			}
 		}
 		else
@@ -200,6 +202,7 @@ void collison_handler_4(int setup)
 
 
 }
+
 //			吃满三个手表
 //				——积分翻倍
 void collison_handler_5(int setup)
@@ -217,20 +220,20 @@ void collison_handler_6(int setup)
 	if(setup==0&&collision_state_6==0)
 		return;
 	if(setup==1&&collision_state_6==0)
-		cs6=1;
+		collision_state_6=1;
 	if (collision_state_6) 
 	{
 		if(collision_counter_6++<100)
 		{
 			// draw the world differently
 			// in frame
-			transparent=1;
+			Transparent=1;
 		}
 		else
 		{
 			collision_counter_6=0;
 			collision_state_6=0;	
-			transparent=0;
+			Transparent=0;
 		}
 	}
 }
@@ -240,33 +243,38 @@ void display_plus_1_second()
 	glutSolidCube(2.0);
 }
 
-void display_simple_obstacle(2.0)
+void display_simple_obstacle()
 {
 	glutSolidCube(2.0);
 }
 
 void display_reporter()
 {
+	glColor3f(1.0,0,0);
 	glutSolidCube(2.0);
 }
 
 void display_apple()
 {
+	glColor3f(0, 1.0, 0);
 	glutSolidCube(2.0);
 }
 
 void display_wallace()
 {
-	glutSolidCube(2.0)
+	glColor3f(0, 0, 1.0);
+	glutSolidCube(2.0);
 }
 
 void display_watch()
 {
+	glColor3f(0.5, 0.5, 0.5);
 	glutSolidCube(2.0);
 }
 
 void display_glasses()
 {
+	glColor3f(1.0, 1.0, 1.0);
 	glutSolidCube(2.0);
 }
 

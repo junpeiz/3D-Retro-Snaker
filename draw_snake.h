@@ -18,15 +18,18 @@ void displayBody();
 void displayTail();
 
 class Snake {
-private:
+public:
 	//a int indicated the length of snake's body
 	int num_body;
+	//to record the position of every body piece
+	GLfloat body_position[max_body_num][3];
+
+private:
+	
 	//use in body_num calcul,when reach a certain time
 	int count_grow;
 	//a count used in recoding the position of 
 	int count;
-	//to record the position of every body piece
-	GLfloat body_position[max_body_num][3];
 
 	void displayHead();
 	void displayBody();

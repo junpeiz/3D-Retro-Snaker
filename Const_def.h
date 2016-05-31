@@ -18,3 +18,5 @@
 #define max_body_num 100 
 
 #define obs_num 100
+
+#define PI 3.14159265857

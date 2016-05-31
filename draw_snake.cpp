@@ -73,7 +73,7 @@ void Snake::collision_test()
 	collision_result = 0;
 	for (int i = 0; i < 100; i++)
 		collision_result += obs[i].collsion_test_obstacle(head[0], head[1], head[2]);
-	for (int i = 5; i < num_body; i++)
+	for (int i = 8; i < num_body; i++)
 		collision_result += collision_test_selfbody(i);
 }
 

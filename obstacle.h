@@ -7,6 +7,7 @@
 #include <GL\GLAUX.H>
 #include <cstdlib>
 #include <cmath>
+#include <math.h>
 #include <cstdio>
 #include <iostream>
 #include <vector>
