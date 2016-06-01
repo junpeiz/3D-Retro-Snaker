@@ -44,7 +44,7 @@ void drawWorld();
 void setMatirial(const GLfloat mat_diffuse[4], GLfloat mat_shininess);
 void ChangingPlaneFunc();
 void ChangingDireFunc();
-void PlayMusic();
+//void PlayMusic();
 
 int main(int argc, char *argv[])
 {
@@ -59,14 +59,13 @@ int main(int argc, char *argv[])
 	glutIdleFunc(Update);
 	//glutPassiveMotionFunc(processMousePassiveMotion);
 	init();
-	Draw_snake_init();
+	//Draw_snake_init();
 	glutMainLoop();
 	return 0;
 }
 
 void Update()
 {
-	TA.update();
 
 	if (AutoRun)
 	{
@@ -166,16 +165,20 @@ void display()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, headColor);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, headColor);
 
-	glEnable(GL_TEXTURE_2D);
-	TA.display();
-	glDisable(GL_TEXTURE_2D);
+	TA.update();
+
 
 	for (int i = 0; i < obs_num; i++)
 		obs[i].display();
+	if (TA.collision_result != 0)
+		printf("%d\n", TA.collision_result);
 
-	printf("%d\n", TA.collision_result);
+	collision_handler(TA.collision_result);
 
-	collison_handler(TA.collision_result);
+
+	glEnable(GL_TEXTURE_2D);
+	TA.display();
+	glDisable(GL_TEXTURE_2D);
 
 	glutSwapBuffers();
 }
@@ -291,7 +294,7 @@ void init()
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition[0]);
 	glLightfv(GL_LIGHT0, GL_AMBIENT_AND_DIFFUSE, backEmi);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, backEmi);
-	PlayMusic();
+	//PlayMusic();
 }
 
 void calcLeft()
@@ -338,7 +341,7 @@ void BackUpVectors()
 		OldLeft[i] = Left[i];
 	}
 }
-
+/*
 void PlayMusic()
 {
 	char buf[128];
@@ -362,3 +365,4 @@ void PlayMusic()
 		return;
 	}
 }
+*/

@@ -2,11 +2,10 @@
 #include "draw_snake.h"
 using namespace std;
 
-int collision_state_1,collision_state_2,collision_state_3,collision_state_4,collision_state_5,collision_state_6;
-static int collision_counter_1,collision_counter_2,collision_counter_3,collision_counter_4,collision_counter_5,collision_counter_6;
+static int collision_state_1,collision_state_2,collision_state_3,collision_state_4,collision_state_5,collision_state_6,collision_state_7;
+static int collision_counter_1,collision_counter_2,collision_counter_3,collision_counter_4,collision_counter_5,collision_counter_6,collision_counter_7;
 extern Snake TA;
 extern bool Transparent;
-int kind;
 Obstacle::Obstacle()
 {
 	memset(position, 0, sizeof(position));
@@ -44,8 +43,9 @@ Obstacle::Obstacle()
 		position[0] = rand() % LengthOfCube - LengthOfCube / 2;
 		break;
 	}
-	kind = rand()%6;
-	printf("kind is %d\n", kind);
+	//this->kind = rand()%6;
+	this->kind = 6;
+	
 }
 
 void Obstacle::display()
@@ -54,7 +54,10 @@ void Obstacle::display()
 	glTranslated(position[0], position[1], position[2]);
 	glRotated(180, 1, 0, 0);
 	glRotated(-90, 0, 0, 1);
-	switch (kind) {
+switch (this->kind) {
+		case 0 :
+			//nothing
+			break;
 		case 1 :	
 			display_simple_obstacle();
 			break;
@@ -73,6 +76,8 @@ void Obstacle::display()
 		case 6 :
 			display_glasses();
 			break;
+		case 7 :
+			display_zju();
 		default:
 			break;
 	}
@@ -83,21 +88,29 @@ void Obstacle::display()
 int  Obstacle::collsion_test_obstacle(GLfloat x, GLfloat y, GLfloat z)
 {
 	int distance = (x - position[0])*(x - position[0]) + (y - position[1])*(y - position[1]) + (z - position[2])*(z - position[2]);
-	return (distance < COLLISION_DISTANCE) ? kind : 0;
+	if (distance < COLLISION_DISTANCE&&this->kind!=0)
+	{
+		int i = this->kind;
+		this->kind = 0;
+		return i;
+	}
+	else
+		return 0;
 }
 
-void collison_handler(int setup)
+void collision_handler(int setup)
 {
-	collison_handler_1(setup);
-	collison_handler_2(setup);
-	collison_handler_3(setup);
-	collison_handler_4(setup);
-	collison_handler_5(setup);
-	collison_handler_6(setup);
+	collision_handler_1(setup);
+	collision_handler_2(setup);
+	collision_handler_3(setup);
+	collision_handler_4(setup);
+	collision_handler_5(setup);
+	collision_handler_6(setup);
+	collision_handler_7(setup);
 }
 
 //simplest kind of  coliison 
-void collison_handler_1(int setup)
+void collision_handler_1(int setup)
 {
 	if(setup==0&&collision_state_1==0)
 		return;
@@ -111,8 +124,11 @@ void collison_handler_1(int setup)
 		glRotated(180, 1, 0, 0);
 		glRotated(-90, 0, 0, 1);
 
-		if (collision_counter_1++ < 10)
+		if (collision_counter_1++ < 1000)
+		{
 			glutSolidTeapot(collision_counter_1 * 100);
+			printf("collison state now : at simple obstacle \n");
+		}
 		else
 		{
 			collision_counter_1 = 0;
@@ -125,7 +141,7 @@ void collison_handler_1(int setup)
 
 //吃一个香港记者
 //	——加速移动
-void collison_handler_2(int setup)
+void collision_handler_2(int setup)
 {
 	if (setup==0&&collision_state_2==0) 
 		return;
@@ -134,13 +150,14 @@ void collison_handler_2(int setup)
 	
 	if (collision_state_2) 
 	{
-		if(collision_counter_2++<10)
+		if(collision_counter_2++<50)
 		{
 			TA.Level++;	
+			printf("collison state now : at reporter , accelerate speed \n");
 		}
 		else
 		{
-			TA.Level -= 10;
+			TA.Level -= 50;
 			collision_counter_2=0;
 			collision_state_2=0;	
 		}
@@ -149,18 +166,19 @@ void collison_handler_2(int setup)
 }
 //	吃一个虵果
 //		——   身长变短  +1s
-void collison_handler_3(int setup)
+void collision_handler_3(int setup)
 {
 	if(setup==0&&collision_state_3==0)
 		return;
 	if(setup==3&&collision_state_5==0)
-		collision_state_5=1;
+		collision_state_3=1;
 	if (collision_state_3) 
 	{
 		if(collision_counter_3++<10)
 		{
-			if(TA.num_body>=1)TA.num_body--;
+			if(TA.num_body>=5)TA.num_body-=TA.num_body/2;
 			display_plus_1_second();
+			printf("collison state now : cut off body \n");
 		}
 		else
 		{
@@ -169,29 +187,41 @@ void collison_handler_3(int setup)
 		}
 	}
 }
-//		碰到华莱士
-//			——下次一遇到障碍物可以飞起来
-void collison_handler_4(int setup)
+/*		
+ *		道具4，碰撞效果4
+ *		贪吃虵的head部分正面撞击道具时触发效果
+ *		飞起来 （不知道高到哪里去了）
+ *		问题：
+ *			1.华莱士还不知道怎么画 绘画请置于void display_wallace()中 导入obj？
+ *			2.飞翔的姿势
+ */
+ void collision_handler_4(int setup)
 {
 	if(setup==0&&collision_state_4==0)
 		return;
-	if(setup==4&&collision_state_4==0)
-		collision_state_4=1;
+	if (setup == 4 && collision_state_4 == 0)
+	{
+		collision_state_4 = 1;
+		collision_counter_4 = 1000;
+	}
 	if (collision_state_4) 
 	{
-		if(collision_state_1||collision_state_2||collision_state_3||collision_state_5||collision_state_6)
-		{
-			collision_counter_4 = 100;
-		}
+		//if(collision_state_1||collision_state_2||collision_state_3||collision_state_5||collision_state_6)
+		//{
+			
+		//}
+
 		if(collision_counter_4>0)
 		{
 			collision_counter_4--;
-			for(int i = 0;i<TA.num_body;i++)
-			{
-	  			TA.body_position[i][0]+=sin(collision_counter_4/100*2*PI);
-				TA.body_position[i][1]+=sin(collision_counter_4/100*2*PI);
-				TA.body_position[i][2]+=sin(collision_counter_4/100*2*PI);
-			}
+			printf("collison state now : at wallace ,flying now counter%d\n",collision_counter_4);
+				TA.head[0] -= 0.05*TA.head[0] / abs(TA.head[0])*sin(collision_counter_4*1.0 / 1000 * 2 * PI);
+				TA.head[1] -= 0.05*TA.head[0] / abs(TA.head[0])*sin(collision_counter_4*1.0 / 1000 * 2 * PI);
+				TA.head[2] -= 0.05*TA.head[0] / abs(TA.head[0])*sin(collision_counter_4*1.0 / 1000 * 2 * PI);
+	  			TA.body_position[0][0]-=0.05*TA.head[0] / abs(TA.head[0])*sin(collision_counter_4*1.0/1000*2*PI);
+				TA.body_position[0][1]-=0.05*TA.head[0] / abs(TA.head[0])*sin(collision_counter_4*1.0/1000*2*PI);
+				TA.body_position[0][2]-=0.05*TA.head[0] / abs(TA.head[0])*sin(collision_counter_4*1.0/1000*2*PI);
+				printf("position changed !\n");			
 		}
 		else
 		{
@@ -205,29 +235,44 @@ void collison_handler_4(int setup)
 
 //			吃满三个手表
 //				——积分翻倍
-void collison_handler_5(int setup)
+void collision_handler_5(int setup)
 {			
+	if (setup == 0 && collision_state_5 == 0)
+		return;
+	if (setup == 5 && collision_state_5 == 0)
+		collision_state_5 = 1;
+	if (collision_state_5)
+	{
+		if (collision_counter_5++<100)
+		{
+			return;
+		}
+		else
+		{
+			collision_counter_5 = 0;
+			collision_state_5 = 0;
+			TA.Level++;
+		}
+	}
 	
-	if (setup)
-			TA.Level-=TA.Level/2;
-	return;
 }
 //				吃一个黑框眼镜
 //					——立体透视3秒
-void collison_handler_6(int setup)
+void collision_handler_6(int setup)
 {
 	//this seem to needs change the drawworld function
 	if(setup==0&&collision_state_6==0)
 		return;
-	if(setup==1&&collision_state_6==0)
+	if(setup==6&&collision_state_6==0)
 		collision_state_6=1;
 	if (collision_state_6) 
 	{
-		if(collision_counter_6++<100)
+		if(collision_counter_6++<200)
 		{
 			// draw the world differently
 			// in frame
 			Transparent=1;
+			printf("collison state now : tranparent now \n");
 		}
 		else
 		{
@@ -236,6 +281,46 @@ void collison_handler_6(int setup)
 			Transparent=0;
 		}
 	}
+}
+
+//		碰到浙江大学
+//			钻到了地底下
+void collision_handler_7(int setup)
+{
+	if (setup == 0 && collision_state_7 == 0)
+		return;
+	if (setup == 7 && collision_state_7 == 0)
+	{
+		collision_state_7 = 1;
+		collision_counter_7 = 1000;
+	}
+	if (collision_state_7)
+	{
+		//if(collision_state_1||collision_state_2||collision_state_3||collision_state_5||collision_state_6)
+		//{
+
+		//}
+
+		if (collision_counter_7>0)
+		{
+			collision_counter_7--;
+			printf("collison state now : at wallace ,flying now counter%d\n", collision_counter_4);
+			TA.head[0] += 0.05*TA.head[0] / abs(TA.head[0])*sin(collision_counter_7*1.0 / 1000 * 2 * PI);
+			TA.head[1] += 0.05*TA.head[0] / abs(TA.head[0])*sin(collision_counter_7*1.0 / 1000 * 2 * PI);
+			TA.head[2] += 0.05*TA.head[0] / abs(TA.head[0])*sin(collision_counter_7*1.0 / 1000 * 2 * PI);
+			TA.body_position[0][0] += 0.05*TA.head[0] / abs(TA.head[0])*sin(collision_counter_7*1.0 / 1000 * 2 * PI);
+			TA.body_position[0][1] += 0.05*TA.head[0] / abs(TA.head[0])*sin(collision_counter_7*1.0 / 1000 * 2 * PI);
+			TA.body_position[0][2] += 0.05*TA.head[0] / abs(TA.head[0])*sin(collision_counter_7*1.0 / 1000 * 2 * PI);
+			printf("position changed !\n");
+		}
+		else
+		{
+			collision_counter_7 = 0;
+			collision_state_7 = 0;
+		}
+	}
+
+
 }
 
 void display_plus_1_second()
@@ -273,6 +358,12 @@ void display_watch()
 }
 
 void display_glasses()
+{
+	glColor3f(1.0, 1.0, 1.0);
+	glutSolidCube(2.0);
+}
+
+void display_zju()
 {
 	glColor3f(1.0, 1.0, 1.0);
 	glutSolidCube(2.0);

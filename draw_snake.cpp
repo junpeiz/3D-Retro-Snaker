@@ -1,7 +1,7 @@
 #include "draw_snake.h"
 #include "obstacle.h"
 
-GLuint Texture[num_of_pic];
+//GLuint Texture[num_of_pic];
 extern Obstacle obs[100];
 
 void Snake::displayHead()
@@ -11,8 +11,8 @@ void Snake::displayHead()
 	glRotated(180, 1, 0, 0);
 	glRotated(-90, 0, 0, 1);
 
-	//glutSolidTeapot(2.0);
-	Draw_snake_head(head_size);
+	glutSolidTeapot(2.0);
+	//Draw_snake_head(head_size);
 
 	glPopMatrix();
 }
@@ -24,8 +24,8 @@ void Snake::displayBody()
 		if (i >= max_body_num)i = 0;
 		glPushMatrix();
 		glTranslatef(body_position[i][0], body_position[i][1], body_position[i][2]);
-		//glutSolidTeapot(2);
-		Draw_snake_body(body_size);
+		glutSolidTeapot(0.5);
+		//Draw_snake_body(body_size);
 		glPopMatrix();
 	}
 }
@@ -34,15 +34,15 @@ void Snake::displayTail()
 {
 	glPushMatrix();
 	glTranslatef(body_position[num_body - 1][0], body_position[num_body - 1][1], body_position[num_body - 1][2]);
-	//glutSolidTeapot(2);
-	Draw_snake_body(tail_size);
+	glutSolidTeapot(0.1);
+	//Draw_snake_body(tail_size);
 	glPopMatrix();
 }
 
 void Snake::update_num()
 {
 	count_grow++;
-	if (count_grow >= 250 && num_body <= max_body_num)
+	if (count_grow >= 50 && num_body <= max_body_num)
 	{
 		num_body++;
 
@@ -54,17 +54,30 @@ void Snake::update_num()
 void Snake::update_position()
 {
 	count++;
-	if (count >= 80) {
+	if (count>50) {
 		for (int i = 0; i < num_body - 1; i++)
 		{
-			body_position[num_body - 1 - i][0] = body_position[num_body - 2 - i][0];
-			body_position[num_body - 1 - i][1] = body_position[num_body - 2 - i][1];
-			body_position[num_body - 1 - i][2] = body_position[num_body - 2 - i][2];
+			interval[num_body - 1 - i][0] = interval[num_body - 2 - i][0];
+			interval[num_body - 1 - i][1] = interval[num_body - 2 - i][1];
+			interval[num_body - 1 - i][2] = interval[num_body - 2 - i][2];
 		}
+
+		interval[0][0] = 2 * (body_position[0][0] - head[0]);
+		interval[0][1] = 2 * (body_position[0][1] - head[1]);
+		interval[0][2] = 2 * (body_position[0][2] - head[2]);
+
 		body_position[0][0] = head[0];
 		body_position[0][1] = head[1];
 		body_position[0][2] = head[2];
+
 		count = 0;
+	}
+
+	for (int i = 1; i < num_body - 1; i++)
+	{
+		body_position[i][0] = body_position[i - 1][0] + interval[i - 1][0];
+		body_position[i][1] = body_position[i - 1][1] + interval[i - 1][1];
+		body_position[i][2] = body_position[i - 1][2] + interval[i - 1][2];
 	}
 }
 
@@ -73,17 +86,18 @@ void Snake::collision_test()
 	collision_result = 0;
 	for (int i = 0; i < 100; i++)
 		collision_result += obs[i].collsion_test_obstacle(head[0], head[1], head[2]);
-	for (int i = 8; i < num_body; i++)
-		collision_result += collision_test_selfbody(i);
+	//for (int i = 8; i < num_body; i++)
+		//collision_result += collision_test_selfbody(i);
 }
 
 int Snake::collision_test_selfbody(int i)
 {
 
 	int distance = (head[0] - body_position[i][0])*(head[0] - body_position[i][0]) + (head[1] - body_position[i][1])*(head[1] - body_position[i][1]) + (head[2] - body_position[i][2])*(head[2] - body_position[i][2]);
-	return (distance < COLLISION_DISTANCE) ? 1 : 0;
+	return (distance < COLLISION_DISTANCE&& distance!=0) ? 1 : 0;
 }
 
+/*
 AUX_RGBImageRec *LoadBMP(char * Filename)
 {
 	FILE *File = NULL;
@@ -284,3 +298,4 @@ void Draw_snake_init()
 	LoadGLTextures(Texture[3], "snake_teeth.bmp");
 	LoadGLTextures(Texture[4], "ordinary_grass.bmp");
 }
+*/

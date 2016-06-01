@@ -2,9 +2,9 @@
 #define DRAW_SNAKE_H
 
 #include "Const_def.h"
-#include <GL\glew.h>
-#include <GL\freeglut.h>
-#include <GL\GLAUX.H>
+#include "Dependencies\glew\glew.h"
+#include "Dependencies\freeglut\freeglut.h"
+
 #include <cstdlib>
 #include <cmath>
 #include <cstdio>
@@ -18,11 +18,6 @@ void displayBody();
 void displayTail();
 
 class Snake {
-public:
-	//a int indicated the length of snake's body
-	int num_body;
-	//to record the position of every body piece
-	GLfloat body_position[max_body_num][3];
 
 private:
 	
@@ -44,13 +39,18 @@ public:
 	int collision_result;
 	int Level = 1;
 	double Speed = 0.02;
-
+	//a int indicated the length of snake's body
+	int num_body;
+	//to record the position of every body piece
+	GLfloat body_position[max_body_num][3];
+	GLfloat interval[max_body_num][3];
 	Snake() {
 		head[0] = StartHeadX;
 		head[1] = 0.0;
 		head[2] = 0.0;
 		num_body = 1;
 		memset(body_position, 0, sizeof(body_position));
+		memset(interval, 0, sizeof(interval));
 	}
 
 	void display() {
@@ -66,6 +66,7 @@ public:
 	}
 };
 
+/*
 void Draw_snake_init();
 
 void Draw_cube(GLfloat size);
@@ -76,5 +77,5 @@ void Draw_snake_body(GLfloat size);
 
 AUX_RGBImageRec *LoadBMP(char * Filename);
 int LoadGLTextures(GLuint& unTexture, const char* chFileName);
-
+*/
 #endif
