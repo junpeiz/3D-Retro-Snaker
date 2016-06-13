@@ -1,5 +1,6 @@
 ﻿#include "draw_snake.h"
 #include "obstacle.h"
+#include "Dependencies\loadobj\Object.hpp"
 #include <mmsystem.h>   //head file for import music
 
 #pragma comment(lib,"winmm.lib")	//import music 
@@ -22,29 +23,38 @@ OldLeft[2] = { 2, 1 },
 ChangingDire = 0,
 Score = 0;
 
+extern GLuint Galaxy[num_of_galaxy];
+extern GLuint Texture[num_of_pic];
+extern GLfloat angleTurn = 0.0,
+angleChangePlane = 0.0;
 GLfloat
 camera[3] = { StartViewX, -HeadCameDistance, 0.0 },
-angleTurn = 0.0,
-angleChangePlane = 0.0,
 lightPosition[][4] = { { 0.0, -1.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 } },
 wallSpecular[4] = { 0.3, 0.3, 0.3, 1.0 },
-wallShininess = 50.0,     
-CameraUp[3] = { 1.0, 0.0, 0.0 }; 
+wallShininess = 50.0,
+CameraUp[3] = { 1.0, 0.0, 0.0 },
+cameraMouse[3] = { 0.0, 0.0, 0.0 };
 
 Obstacle obs[obs_num];
 Snake TA;
+Object car;
 
 void init();
+void obj_init();
 void BackUpVectors();
 void keyboardFunc(unsigned char key, int x, int y);
 void display();
+void obj_display();
 void processMousePassiveMotion(int x, int y);
 void Update();
 void drawWorld();
+void draw_galaxy(GLfloat size);
 void setMatirial(const GLfloat mat_diffuse[4], GLfloat mat_shininess);
 void ChangingPlaneFunc();
 void ChangingDireFunc();
-//void PlayMusic();
+void PlayMusic();
+void mouseFunc(int x, int y);
+
 
 int main(int argc, char *argv[])
 {
@@ -57,9 +67,10 @@ int main(int argc, char *argv[])
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboardFunc);
 	glutIdleFunc(Update);
+	glutPassiveMotionFunc(mouseFunc);
 	//glutPassiveMotionFunc(processMousePassiveMotion);
 	init();
-	//Draw_snake_init();
+	Draw_snake_init();
 	glutMainLoop();
 	return 0;
 }
@@ -158,9 +169,12 @@ void display()
 	gluPerspective(100.0f, 1.5f, 0.1f, 500.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(camera[0], camera[1], camera[2], TA.head[0], TA.head[1], TA.head[2], CameraUp[0], CameraUp[1], CameraUp[2]); //Ïà»úÎ»ÖÃ,ÖÐÐÄÎ»ÖÃ£¬ÉÏÏòÁ¿
+	gluLookAt(camera[0], camera[1], camera[2], TA.head[0] + cameraMouse[0], TA.head[1] + cameraMouse[1], TA.head[2] + cameraMouse[2], CameraUp[0], CameraUp[1], CameraUp[2]);
 
+	glEnable(GL_TEXTURE_2D);
 	drawWorld();
+	draw_galaxy(galaxy_size);
+	glDisable(GL_TEXTURE_2D);
 
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, headColor);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, headColor);
@@ -175,12 +189,23 @@ void display()
 
 	collision_handler(TA.collision_result);
 
-
 	glEnable(GL_TEXTURE_2D);
 	TA.display();
 	glDisable(GL_TEXTURE_2D);
 
+	//obj_display();
+	
 	glutSwapBuffers();
+}
+
+void obj_display()
+{
+	glPushMatrix();
+	glTranslated(TA.head[0], TA.head[1], TA.head[2]);
+	glEnable(GL_TEXTURE_2D);
+	car.draw();
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
 }
 
 void drawWorld()
@@ -201,7 +226,10 @@ void drawWorld()
 	//glLightfv(GL_LIGHT0, GL_POSITION, lightPosition[1]);
 	if (!Transparent)
 		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, blue_color);
-	glutSolidCube(LengthOfCube);
+
+	glBindTexture(GL_TEXTURE_2D, Texture[4]);
+	//glutSolidCube(LengthOfCube/2);
+	Draw_cube(LengthOfCube/2);
 	glPopMatrix();
 
 	glPushMatrix();
@@ -242,6 +270,57 @@ void drawWorld()
 
 	glDepthMask(GL_TRUE);
 
+}
+
+void draw_galaxy(GLfloat size)
+{
+	glBindTexture(GL_TEXTURE_2D, Galaxy[0]);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(-size, -size, size);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(size, -size, size);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(size, size, size);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(-size, size, size);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, Galaxy[1]);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(-size, -size, -size);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(-size, size, -size);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(size, size, -size);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(size, -size, -size);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, Galaxy[2]);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(-size, size, -size);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(-size, size, size);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(size, size, size);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(size, size, -size);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, Galaxy[3]);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(-size, -size, -size);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(size, -size, -size);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(size, -size, size);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(-size, -size, size);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, Galaxy[4]);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(size, -size, -size);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(size, size, -size);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(size, size, size);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(size, -size, size);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, Galaxy[5]);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(-size, -size, -size);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(-size, -size, size);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(-size, size, size);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(-size, size, -size);
+	glEnd();
 }
 
 void keyboardFunc(unsigned char key, int x, int y)
@@ -294,7 +373,16 @@ void init()
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition[0]);
 	glLightfv(GL_LIGHT0, GL_AMBIENT_AND_DIFFUSE, backEmi);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, backEmi);
-	//PlayMusic();
+	PlayMusic();
+	//obj_init();
+}
+
+void obj_init()
+{
+	car.reset("humvee.obj", "humvee.mtl");
+	car.rotate(PI / 2, 1, 0, 0);
+	car.rotate(PI / 2, 0, 0, 1);
+	car.scale(5);
 }
 
 void calcLeft()
@@ -341,7 +429,7 @@ void BackUpVectors()
 		OldLeft[i] = Left[i];
 	}
 }
-/*
+
 void PlayMusic()
 {
 	char buf[128];
@@ -365,4 +453,18 @@ void PlayMusic()
 		return;
 	}
 }
-*/
+
+void mouseFunc(int x, int y)
+{
+
+	//cameraMouse[Left[0]] =-(x-600)*Left[1]*1.0/50;
+	int sign = x - 600 > 0 ? 1 : -1;
+	if (abs(x - 600) < 150)
+		cameraMouse[Left[0]] = 0;
+	else
+		cameraMouse[Left[0]] = Left[1] * HeadCameDistance *tan(asin(sign*(abs(x - 600.0) - 150) / 600));
+	cameraMouse[Up[0]] = -(y - 400)*Up[1] * 1.0 / 50;
+	cameraMouse[View[0]] = 0;
+	glutPostRedisplay();
+}
+

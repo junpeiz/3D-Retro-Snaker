@@ -4,6 +4,7 @@
 #include "Const_def.h"
 #include "Dependencies\glew\glew.h"
 #include "Dependencies\freeglut\freeglut.h"
+#include "Dependencies\glaux\GLAUX.H"
 
 #include <cstdlib>
 #include <cmath>
@@ -66,7 +67,7 @@ public:
 	}
 };
 
-/*
+
 void Draw_snake_init();
 
 void Draw_cube(GLfloat size);
@@ -77,5 +78,5 @@ void Draw_snake_body(GLfloat size);
 
 AUX_RGBImageRec *LoadBMP(char * Filename);
 int LoadGLTextures(GLuint& unTexture, const char* chFileName);
-*/
+
 #endif
