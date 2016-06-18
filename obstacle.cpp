@@ -1,11 +1,14 @@
 #include "obstacle.h"
 #include "draw_snake.h"
+#include "Dependencies\loadobj\Object.hpp"
 using namespace std;
 
 static int collision_state_1,collision_state_2,collision_state_3,collision_state_4,collision_state_5,collision_state_6,collision_state_7;
 static int collision_counter_1,collision_counter_2,collision_counter_3,collision_counter_4,collision_counter_5,collision_counter_6,collision_counter_7;
 extern Snake TA;
 extern bool Transparent;
+extern Object werewolf;
+
 Obstacle::Obstacle()
 {
 	memset(position, 0, sizeof(position));
@@ -13,38 +16,38 @@ Obstacle::Obstacle()
 	switch (i)
 	{
 	case 0:
-		position[0] = LengthOfCube / 2;
-		position[1] = rand() % LengthOfCube - LengthOfCube / 2;
+		position[0] = LengthOfCube / 2 ;
+		position[1] = rand() % LengthOfCube - LengthOfCube / 2 ;
 		position[2] = rand() % LengthOfCube - LengthOfCube / 2;
 		break;
 	case 1:
-		position[0] = -LengthOfCube / 2;
-		position[1] = rand() % LengthOfCube - LengthOfCube / 2;
-		position[2] = rand() % LengthOfCube - LengthOfCube / 2;
+		position[0] = -LengthOfCube / 2 ;
+		position[1] = rand() % LengthOfCube - LengthOfCube / 2 ;
+		position[2] = rand() % LengthOfCube - LengthOfCube / 2 ;
 		break;
 	case 2:
-		position[1] = LengthOfCube / 2;
-		position[0] = rand() % LengthOfCube - LengthOfCube / 2;
-		position[2] = rand() % LengthOfCube - LengthOfCube / 2;
+		position[1] = LengthOfCube / 2 ;
+		position[0] = rand() % LengthOfCube - LengthOfCube / 2 ;
+		position[2] = rand() % LengthOfCube - LengthOfCube / 2 ;
 		break;
 	case 3:
-		position[1] = -LengthOfCube / 2;
-		position[0] = rand() % LengthOfCube - LengthOfCube / 2;
-		position[2] = rand() % LengthOfCube - LengthOfCube / 2;
+		position[1] = -LengthOfCube / 2 ;
+		position[0] = rand() % LengthOfCube - LengthOfCube / 2 ;
+		position[2] = rand() % LengthOfCube - LengthOfCube / 2 ;
 		break;
 	case 4:
-		position[2] = LengthOfCube / 2;
-		position[1] = rand() % LengthOfCube - LengthOfCube / 2;
-		position[0] = rand() % LengthOfCube - LengthOfCube / 2;
+		position[2] = LengthOfCube / 2 ;
+		position[1] = rand() % LengthOfCube - LengthOfCube / 2 ;
+		position[0] = rand() % LengthOfCube - LengthOfCube / 2 ;
 		break;
 	case 5:
-		position[2] = LengthOfCube / 2;
+		position[2] = -LengthOfCube / 2;
 		position[1] = rand() % LengthOfCube - LengthOfCube / 2;
 		position[0] = rand() % LengthOfCube - LengthOfCube / 2;
 		break;
 	}
-	//this->kind = rand()%6;
-	this->kind = 6;
+	this->kind = rand()%6;
+	//this->kind = 6;
 	
 }
 
@@ -150,14 +153,14 @@ void collision_handler_2(int setup)
 	
 	if (collision_state_2) 
 	{
-		if(collision_counter_2++<50)
+		if(collision_counter_2++<20)
 		{
 			TA.Level++;	
 			printf("collison state now : at reporter , accelerate speed \n");
 		}
 		else
 		{
-			TA.Level -= 50;
+			TA.Level -= 20;
 			collision_counter_2=0;
 			collision_state_2=0;	
 		}
@@ -325,48 +328,57 @@ void collision_handler_7(int setup)
 
 void display_plus_1_second()
 {
-	glutSolidCube(2.0);
+	glutSolidCone(2.0, 2.0, 50, 50);
+	//glutSolidCube(2.0);
+	//werewolf.draw();
 }
 
 void display_simple_obstacle()
 {
-	glutSolidCube(2.0);
+	//glutSolidCube(2.0);
+	glutSolidCylinder(1.0, 2.0, 50, 50);
 }
 
 void display_reporter()
 {
 	glColor3f(1.0,0,0);
-	glutSolidCube(2.0);
+	//glutSolidCube(2.0);
+	glutSolidDodecahedron();
 }
 
 void display_apple()
 {
 	glColor3f(0, 1.0, 0);
-	glutSolidCube(2.0);
+	//glutSolidCube(2.0);
+	glutSolidIcosahedron();
 }
 
 void display_wallace()
 {
 	glColor3f(0, 0, 1.0);
-	glutSolidCube(2.0);
+	//glutSolidCube(2.0);
+	glutSolidOctahedron();
 }
 
 void display_watch()
 {
 	glColor3f(0.5, 0.5, 0.5);
-	glutSolidCube(2.0);
+	//glutSolidCube(2.0);
+	glutSolidRhombicDodecahedron();
 }
 
 void display_glasses()
 {
 	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(2.0);
+	//glutSolidCube(2.0);
+	glutSolidSphere(1.0, 50, 50);
 }
 
 void display_zju()
 {
 	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(2.0);
+	//glutSolidCube(2.0);
+	glutSolidTeapot(2.0);
 }
 
 		
