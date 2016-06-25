@@ -29,7 +29,7 @@ extern GLfloat angleTurn = 0.0,
 angleChangePlane = 0.0;
 GLfloat
 camera[3] = { StartViewX, -HeadCameDistance, 0.0 },
-lightPosition[][4] = { { 0.0, -1.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 } },
+lightPosition[][4] = { { 1.0, 0.0, 0.0, 0.0 }, { -1.0, 0.0, 0.0, 0.0 },{ 0.0, 1.0, 0.0, 0.0 },{ 0.0, -1.0, 0.0, 0.0 },{ 0.0, 0.0, 1.0, 0.0 },{ 0.0, 0.0, -1.0, 0.0 } },
 wallSpecular[4] = { 0.3, 0.3, 0.3, 1.0 },
 wallShininess = 50.0,
 CameraUp[3] = { 1.0, 0.0, 0.0 },
@@ -37,7 +37,7 @@ cameraMouse[3] = { 0.0, 0.0, 0.0 };
 
 Obstacle obs[obs_num];
 Snake TA;
-Object car;
+Object car, lantern;
 
 void init();
 void obj_init();
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowSize(1200, 800);
+	glutInitWindowSize(window_length, window_width);
 	glutInitWindowPosition(0, 0);
 	glutCreateWindow("3D greedy snake");
 
@@ -181,9 +181,9 @@ void display()
 
 	TA.update();
 
-
 	for (int i = 0; i < obs_num; i++)
 		obs[i].display();
+
 	if (TA.collision_result != 0)
 		printf("%d\n", TA.collision_result);
 
@@ -192,27 +192,19 @@ void display()
 	glEnable(GL_TEXTURE_2D);
 	TA.display();
 	glDisable(GL_TEXTURE_2D);
-
-	//obj_display();
 	
+	//car.draw(TA.head[0], TA.head[1], TA.head[2]);
+	//lantern.draw(TA.head[0] + 5.0, TA.head[1], TA.head[2]);
+
 	glutSwapBuffers();
 }
 
-void obj_display()
-{
-	glPushMatrix();
-	glTranslated(TA.head[0], TA.head[1], TA.head[2]);
-	glEnable(GL_TEXTURE_2D);
-	car.draw();
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
-}
 
 void drawWorld()
 {
 
-	const static GLfloat a[][6] = { { 1.0f, 0.0f, 0.0f, 0.4f }, { 0.0f, 1.0f, 0.0f, 0.4f }, { 0.0f, 0.0f, 1.0f, 0.4f }, { 1.0f, 1.0f, 0.0f, 0.4f }, { 0.0f, 1.0f, 1.0f, 0.4f }, { 1.0f, 0.0f, 1.0f, 0.4f } };
-
+	//const static GLfloat a[][6] = { { 1.0f, 0.0f, 0.0f, 0.4f }, { 0.0f, 1.0f, 0.0f, 0.4f }, { 0.0f, 0.0f, 1.0f, 0.4f }, { 1.0f, 1.0f, 0.0f, 0.4f }, { 0.0f, 1.0f, 1.0f, 0.4f }, { 1.0f, 0.0f, 1.0f, 0.4f } };
+	const static GLfloat a[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	const static GLfloat blue_color[] = { 0.0f, 0.0f, 0.5f, 0.4f };
 	if (Transparent)
 	{
@@ -234,38 +226,44 @@ void drawWorld()
 
 	glPushMatrix();
 	glTranslated(0, 0, 100);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, a[0]);
-	glutSolidCube(20);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, a);
+	//glutSolidCube(20);
+	lantern.draw();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(0, 0, -100);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, a[1]);
-	glutSolidCube(20);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, a);
+	//glutSolidCube(20);
+	lantern.draw();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(0, 100, 0);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, a[2]);
-	glutSolidCube(20);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, a);
+	//glutSolidCube(20);
+	lantern.draw();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(0, -100, 0);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, a[3]);
-	glutSolidCube(20);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, a);
+	//glutSolidCube(20);
+	lantern.draw();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(100, 0, 0);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, a[4]);
-	glutSolidCube(20);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, a);
+	//glutSolidCube(20);
+	lantern.draw();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(-100, 0, 0);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, a[5]);
-	glutSolidCube(20);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, a);
+	//glutSolidCube(20);
+	lantern.draw();
 	glPopMatrix();
 
 	glDepthMask(GL_TRUE);
@@ -274,7 +272,7 @@ void drawWorld()
 
 void draw_galaxy(GLfloat size)
 {
-	glBindTexture(GL_TEXTURE_2D, Galaxy[0]);
+	glBindTexture(GL_TEXTURE_2D, Galaxy[5]);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(-size, -size, size);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(size, -size, size);
@@ -282,7 +280,7 @@ void draw_galaxy(GLfloat size)
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(-size, size, size);
 	glEnd();
 
-	glBindTexture(GL_TEXTURE_2D, Galaxy[1]);
+	glBindTexture(GL_TEXTURE_2D, Galaxy[5]);
 	glBegin(GL_QUADS);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(-size, -size, -size);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(-size, size, -size);
@@ -290,7 +288,7 @@ void draw_galaxy(GLfloat size)
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(size, -size, -size);
 	glEnd();
 
-	glBindTexture(GL_TEXTURE_2D, Galaxy[2]);
+	glBindTexture(GL_TEXTURE_2D, Galaxy[5]);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(-size, size, -size);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(-size, size, size);
@@ -298,7 +296,7 @@ void draw_galaxy(GLfloat size)
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(size, size, -size);
 	glEnd();
 
-	glBindTexture(GL_TEXTURE_2D, Galaxy[3]);
+	glBindTexture(GL_TEXTURE_2D, Galaxy[5]);
 	glBegin(GL_QUADS);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(-size, -size, -size);
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(size, -size, -size);
@@ -306,7 +304,7 @@ void draw_galaxy(GLfloat size)
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(-size, -size, size);
 	glEnd();
 
-	glBindTexture(GL_TEXTURE_2D, Galaxy[4]);
+	glBindTexture(GL_TEXTURE_2D, Galaxy[5]);
 	glBegin(GL_QUADS);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(size, -size, -size);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(size, size, -size);
@@ -360,7 +358,7 @@ void keyboardFunc(unsigned char key, int x, int y)
 
 void init()
 {
-	GLfloat backEmi[] = { 1.0, 0.9, 0.01, 0.9 };
+	GLfloat backEmi[] = { 1.0, 0.9, 0.01, 1.0 };
 	glClearColor(0.0, 0.0, 0.0, 1.0);//±³¾°ÑÕÉ«
 	glClearDepth(1.0);				//´ÓÕâ¸ödepth¿ªÊ¼¿´²»¼û
 	glMatrixMode(GL_MODELVIEW);  //ÉèÖÃµ±Ç°²Ù×÷µÄ¾ØÕóÎª¡°Ä£ÐÍÊÓÍ¼¾ØÕó¡±
@@ -369,20 +367,28 @@ void init()
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);         //ÆôÓÃ»·¾³¹â
 	glEnable(GL_DEPTH_TEST);     //¸ù¾Ý×ø±êÔ¶½üÒþ²Ø±»ÕÚ×¡µÄÍ¼ÐÎ
+	glEnable(GL_LIGHT0);
 	glLoadIdentity();//ÔÚ½øÐÐ±ä»»Ç°°Ñµ±Ç°¾ØÕóÉèÖÃÎªµ¥Î»¾ØÕó
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition[0]);
 	glLightfv(GL_LIGHT0, GL_AMBIENT_AND_DIFFUSE, backEmi);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, backEmi);
+	for (int i = 0; i < 6; i++)
+	{
+		glEnable(GL_LIGHT0 + i);
+		glLightfv(GL_LIGHT0 + i, GL_POSITION, lightPosition[i]);
+		glLightfv(GL_LIGHT0 + i, GL_AMBIENT_AND_DIFFUSE, backEmi);
+		glLightfv(GL_LIGHT0 + i, GL_SPECULAR, backEmi);
+	}
 	PlayMusic();
-	//obj_init();
+	obj_init();
 }
 
 void obj_init()
 {
-	car.reset("humvee.obj", "humvee.mtl");
-	car.rotate(PI / 2, 1, 0, 0);
-	car.rotate(PI / 2, 0, 0, 1);
-	car.scale(5);
+	lantern.reset("lantern.obj", "");
+	//lantern.rotate(PI / 2, 1, 0, 0);
+	//lantern.rotate(-PI / 2, 0, 0, 1);
+	lantern.scale(20);
 }
 
 void calcLeft()
@@ -458,7 +464,7 @@ void mouseFunc(int x, int y)
 {
 
 	//cameraMouse[Left[0]] =-(x-600)*Left[1]*1.0/50;
-	int sign = x - 600 > 0 ? 1 : -1;
+	int sign = x - 600 > 0 ? -1 : 1;
 	if (abs(x - 600) < 150)
 		cameraMouse[Left[0]] = 0;
 	else

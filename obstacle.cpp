@@ -7,7 +7,7 @@ static int collision_state_1,collision_state_2,collision_state_3,collision_state
 static int collision_counter_1,collision_counter_2,collision_counter_3,collision_counter_4,collision_counter_5,collision_counter_6,collision_counter_7;
 extern Snake TA;
 extern bool Transparent;
-extern Object werewolf;
+extern Object lantern;
 
 Obstacle::Obstacle()
 {
@@ -328,15 +328,16 @@ void collision_handler_7(int setup)
 
 void display_plus_1_second()
 {
-	glutSolidCone(2.0, 2.0, 50, 50);
-	//glutSolidCube(2.0);
-	//werewolf.draw();
+	//glutSolidCone(2.0, 2.0, 50, 50);
+	glutSolidCube(2.0);
+	//lantern.draw();
 }
 
 void display_simple_obstacle()
 {
 	//glutSolidCube(2.0);
 	glutSolidCylinder(1.0, 2.0, 50, 50);
+	//lantern.draw();
 }
 
 void display_reporter()
@@ -344,6 +345,7 @@ void display_reporter()
 	glColor3f(1.0,0,0);
 	//glutSolidCube(2.0);
 	glutSolidDodecahedron();
+	//lantern.draw();
 }
 
 void display_apple()
@@ -351,13 +353,14 @@ void display_apple()
 	glColor3f(0, 1.0, 0);
 	//glutSolidCube(2.0);
 	glutSolidIcosahedron();
+	//lantern.draw();
 }
 
 void display_wallace()
 {
 	glColor3f(0, 0, 1.0);
 	//glutSolidCube(2.0);
-	glutSolidOctahedron();
+	glutSolidDodecahedron();
 }
 
 void display_watch()
@@ -377,8 +380,9 @@ void display_glasses()
 void display_zju()
 {
 	glColor3f(1.0, 1.0, 1.0);
-	//glutSolidCube(2.0);
-	glutSolidTeapot(2.0);
+	glutSolidCube(2.0);
+	//glutSolidTeapot(2.0);
+	//lantern.draw();
 }
 
 		

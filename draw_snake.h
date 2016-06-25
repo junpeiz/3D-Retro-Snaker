@@ -38,7 +38,8 @@ private:
 public:
 	GLfloat head[3];
 	int collision_result;
-	int Level = 1;
+	int Level = 4;
+	int level_count = 0;
 	double Speed = 0.02;
 	//a int indicated the length of snake's body
 	int num_body;
@@ -61,6 +62,10 @@ public:
 	}
 
 	void update() {
+		if (level_count++ == 50000) {
+			level_count = 0;
+			Level++;
+		}
 		update_num();
 		update_position();
 		collision_test();

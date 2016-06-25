@@ -1,4 +1,4 @@
-#define LengthOfCube 50
+#define LengthOfCube 103
 #define LengthOfColumn 1.0
 #define StartHeadX (LengthOfCube/2+LengthOfColumn/2)
 #define StartViewX (LengthOfCube/2+4*LengthOfColumn)
@@ -17,8 +17,11 @@
 #define num_of_galaxy 6
 #define galaxy_size 200
 
-#define max_body_num 20 
+#define max_body_num 40 
 
 #define obs_num 100
 
 #define PI 3.14159265857
+
+#define window_length 1200
+#define window_width 800

@@ -4,6 +4,7 @@
 #include "Const_def.h"
 #include "Dependencies\glew\glew.h"
 #include "Dependencies\freeglut\freeglut.h"
+#include "Dependencies\glaux\GLAUX.H"
 #include <cstdlib>
 #include <cmath>
 #include <math.h>

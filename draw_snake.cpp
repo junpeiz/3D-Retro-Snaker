@@ -162,7 +162,7 @@ void Snake::displayTail()
 
 void Snake::update_num()
 {
-	if(!ChangingPlane)
+	if( !ChangingPlane && !ChangingDire )
 		count_grow++;
 	if (count_grow >= 10 && num_body <= max_body_num)
 	{
@@ -175,7 +175,7 @@ void Snake::update_num()
 
 void Snake::update_position()
 {
-	if (!ChangingPlane)
+	if (!ChangingPlane && !ChangingDire)
 		count++;
 	if (count>10) {
 		for (int i = 0; i < num_body - 1; i++)
