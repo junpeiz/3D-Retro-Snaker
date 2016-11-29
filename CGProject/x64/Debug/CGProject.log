@@ -1,0 +1,15 @@
+﻿Build started 2016/6/1 21:17:49.
+     1>Project "C:\Users\Flamingo\Desktop\CG_Project\CGProject-master\CGProject\CGProject.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Flamingo\Desktop\CG_Project\CGProject-master\x64\Debug\CGProject.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\Flamingo\Desktop\CG_Project\CGProject-master\CGProject\Dependencies\glaux" glaux.lib advapi.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"C:\Users\Flamingo\Desktop\CG_Project\CGProject-master\x64\Debug\CGProject.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Flamingo\Desktop\CG_Project\CGProject-master\x64\Debug\CGProject.lib" /MACHINE:X64 x64\Debug\draw_snake.obj
+         x64\Debug\main.obj
+         x64\Debug\obstacle.obj
+         Dependencies\freeglut\freeglut.lib
+         Dependencies\glaux\glaux.lib
+         Dependencies\glew\glew32.lib
+     1>LINK : fatal error LNK1104: cannot open file 'advapi.lib'
+     1>Done Building Project "C:\Users\Flamingo\Desktop\CG_Project\CGProject-master\CGProject\CGProject.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.15

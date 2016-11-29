@@ -1,0 +1,29 @@
+﻿  main.cpp
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(31): warning C4838: 从“double”转换到“GLfloat”需要收缩转换
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(31): warning C4305: “初始化”: 从“double”到“GLfloat”截断
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(33): warning C4838: 从“double”转换到“GLfloat”需要收缩转换
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(33): warning C4305: “初始化”: 从“double”到“GLfloat”截断
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(83): warning C4244: “+=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(84): warning C4244: “+=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(119): warning C4305: “+=”: 从“double”到“GLfloat”截断
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(121): warning C4244: “=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(122): warning C4244: “=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(124): warning C4244: “=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(125): warning C4244: “=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(129): warning C4244: “=”: 从“int”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(132): warning C4244: “=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(133): warning C4244: “=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(142): warning C4305: “+=”: 从“double”到“GLfloat”截断
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(144): warning C4244: “=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(145): warning C4244: “=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(149): warning C4244: “=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(155): warning C4244: “=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(165): warning C4838: 从“double”转换到“GLfloat”需要收缩转换
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(165): warning C4305: “初始化”: 从“double”到“GLfloat”截断
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(357): warning C4838: 从“double”转换到“GLfloat”需要收缩转换
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(357): warning C4305: “初始化”: 从“double”到“GLfloat”截断
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(410): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(471): warning C4244: “=”: 从“double”转换到“GLfloat”，可能丢失数据
+c:\users\flamingo\desktop\cg_project\cgproject-master\cgproject\main.cpp(472): warning C4244: “=”: 从“double”转换到“GLfloat”，可能丢失数据
+  CGProject.vcxproj -> C:\Users\Flamingo\Desktop\CG_Project\CGProject-master\Debug\CGProject.exe
+  CGProject.vcxproj -> C:\Users\Flamingo\Desktop\CG_Project\CGProject-master\Debug\CGProject.pdb (Partial PDB)
